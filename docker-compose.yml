@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  rabnginx:
+    container_name: rabnginx
+    build: ./docker/nginx
+    ports: 
+      - "80:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./www:/var/www/html
+    networks:
+      - rablnmp
+
+  rabphp80:
+    container_name: rabphp80
+    build:
+      context: ./docker/php80
+      # args:
+      #   PHP80_VERSION: $PHP80_VERSION
+    networks:
+      - rablnmp
+    ports:
+      - "9000:9000"      
+      - "3000:3000"
+    volumes:
+      - ./www:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - rabmysql
+
+  rabmysql:
+    image: mysql:8.0.28
+    container_name: rabmysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: jason
+      MYSQL_USER: jason
+      MYSQL_PASSWORD: jason
+    ports:
+      - "3306:3306"
+    networks:
+      - rablnmp
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+
+  rabphpmyadmin:
+    image: phpmyadmin:latest
+    container_name: rabpma
+    networks:
+      - rablnmp
+    environment:
+      PMA_HOST: rabmysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 300M
+    restart: always
+    ports:
+      - 8085:80
+    depends_on:
+      - rabmysql
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    networks:
+      - rablnmp
+    environment:
+      RABBITMQ_DEFAULT_USER: jason
+      RABBITMQ_DEFAULT_PASS: jason
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  # redis:
+  #   container_name: redis
+  #   build: ./docker/redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - ./docker/redis/redis.conf/:/usr/local/etc/redis.conf
+  #     - ./docker/redis/data:/usr/local/redis/data
+  #     - ./docker/redis/redis.log:/usr/local/redis/redis.log
+  #   networks:
+  #     - lnmp
+  #   restart: always
+  #   profiles:
+  #     - php80
+  #     - php74
+  #     - all
+  # golang:
+  #   container_name: golang
+  #   build: 
+  #     context: ./docker/golang
+  #     args:
+  #       GOLANG_VERSION: $GOLANG_VERSION
+  #       GOLANG_USER: $GOLANG_USER 
+  #       GOLANG_UID: $GOLANG_UID 
+    
+    # ports:
+    #   - "8888:80"
+    # volumes:
+    #   - ./golang:/go
+    # networks:
+    #   - lnmp
+    # restart: always
+    # profiles:
+    #   - php80
+    #   - php74
+    #   - all
+networks:
+    rablnmp:
