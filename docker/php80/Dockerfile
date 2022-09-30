@@ -20,8 +20,11 @@ RUN install-php-extensions @fix_letsencrypt
 RUN install-php-extensions zip
 RUN install-php-extensions mysqli
 RUN install-php-extensions pdo_mysql
-RUN install-php-extensions redis
+# RUN install-php-extensions redis
 RUN install-php-extensions intl
+RUN install-php-extensions amqp
+RUN install-php-extensions sockets
+
 # RUN install-php-extensions mongodb
 # RUN install-php-extensions pgsql
 # RUN install-php-extensions pdo_pgsql
