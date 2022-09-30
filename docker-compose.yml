@@ -26,6 +26,13 @@ services:
     volumes:
       - ./www:/var/www/html
     working_dir: /var/www/html
+    # command: > 
+    #   sh -c "
+    #     composer install --working-dir=/var/www/html/rabbitmq-test &&  
+    #     cp /var/www/html/rabbitmq-test/.env.example /var/www/html/rabbitmq-test/.env &&
+    #     tail -f /dev/null
+    #   "
+    # tty: true
     depends_on:
       - rabmysql
 

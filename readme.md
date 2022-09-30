@@ -10,4 +10,4 @@
 - git clone this project.
 - cd rabbitMQTest
 - docker-compose up -d
-
+- docker exec -it rabphp80 sh /startup.sh

@@ -40,3 +40,6 @@ RUN install-php-extensions sockets
 RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 COPY php.ini /usr/local/etc/php/conf.d/
+# COPY startup.sh /usr/local/bin
+COPY startup.sh /
+RUN ["chmod", "777", "/startup.sh"]
