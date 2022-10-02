@@ -10,4 +10,5 @@
 - git clone this project.
 - cd rabbitMQTest
 - docker-compose up -d
+- docker exec -it rabmysql mysqladmin -uroot -pjason create rabbit_test
 - docker exec -it rabphp80 sh /startup.sh
