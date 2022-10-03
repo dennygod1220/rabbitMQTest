@@ -12,3 +12,9 @@
 - docker-compose up -d
 - docker exec -it rabmysql mysqladmin -uroot -pjason create rabbit_test
 - docker exec -it rabphp80 sh /startup.sh
+
+## .env config setting 
+- /www/rabbitmq-test/.env
+
+## Start listen queue 
+- docker exec -it rabphp80 php /var/www/html/rabbitmq-test/artisan queue:work rabbitmq

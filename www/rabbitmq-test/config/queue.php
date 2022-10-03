@@ -70,7 +70,7 @@ return [
             'block_for' => null,
             'after_commit' => false,
         ],
-        
+
         'rabbitmq' => [
     
             'driver' => 'rabbitmq',
@@ -96,7 +96,11 @@ return [
                     'passphrase' => env('RABBITMQ_SSL_PASSPHRASE', null),
                 ],
                 'queue' => [
-                    'job' => VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob::class,
+                    'job' => \App\Jobs\RabbitMQJob::class,
+                    // 'job' => VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob::class,
+                    // 'exchange' => 'application-x',
+                    // 'exchange_type' => 'topic',
+                    // 'exchange_routing_key' => 'notification.done',
                 ],
             ],
         
